@@ -17,7 +17,7 @@
 
 Name:		empathy
 Version:	3.8.1
-Release:	2%{?dist}
+Release:	2%{?dist}.bz692746
 Summary:	Instant Messaging Client for GNOME
 
 License:	GPLv2+
@@ -26,6 +26,8 @@ URL:		http://live.gnome.org/Empathy
 Source0:	http://download.gnome.org/sources/%{name}/3.8/%{name}-%{version}.tar.xz
 Source1:	%{name}-README.ConnectionManagers
 Patch0:         001-Fix_crash_when_displaying_google_account_vcard.patch
+#GNOME BZ #692746
+Patch1:         utf8_strescape.patch
 
 
 BuildRequires:	enchant-devel >= %{enchant_version}
@@ -84,6 +86,7 @@ It is built on top of the Telepathy framework.
 %prep
 %setup -q
 %patch0 -p1 -b .vcard
+%patch1 -p1 -b .utf8-strescape
 # force this to be regenerated
 rm data/empathy.desktop
 
@@ -190,6 +193,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/adium/message-styles/PlanetGNOME.AdiumMessageStyle/Contents/Resources/main.css
 
 %changelog
+* Sat May 18 2013 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 3.8.1-2.bz692746
+- Add bugzilla patch https://bugzilla.gnome.org/show_bug.cgi?id=692746
+
 * Wed May  8 2013 Brian Pepple <bpepple@fedoraproject.org> - 3.8.1-2
 - Pull upstream patch to fix crash with google vcards.
 
