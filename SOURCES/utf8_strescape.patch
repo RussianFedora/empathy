@@ -1,0 +1,12 @@
+diff -uNr empathy-3.8.1.orig/libempathy-gtk/empathy-log-window.c empathy-3.8.1/libempathy-gtk/empathy-log-window.c
+--- empathy-3.8.1.orig/libempathy-gtk/empathy-log-window.c	2013-04-01 10:13:28.000000000 +0400
++++ empathy-3.8.1/libempathy-gtk/empathy-log-window.c	2013-05-18 19:34:07.082899722 +0400
+@@ -1272,7 +1272,7 @@
+   empathy_string_parser_substr (empathy_message_get_body (message), -1,
+       parsers, msg);
+ 
+-  msg_escaped = g_strescape (msg->str, NULL);
++  msg_escaped = g_utf8_strescape (msg->str, NULL);
+ 
+   if (tpl_text_event_get_message_type (TPL_TEXT_EVENT (event))
+       == TP_CHANNEL_TEXT_MESSAGE_TYPE_ACTION)
