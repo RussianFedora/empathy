@@ -1,0 +1,28 @@
+From 278b6cf31b679e8473f81ec84a90e092d544c3b1 Mon Sep 17 00:00:00 2001
+From: Guillaume Desmottes <guillaume.desmottes@collabora.co.uk>
+Date: Mon, 11 Mar 2013 15:54:45 +0000
+Subject: irc-network-chooser-dialog: break live search references cycle
+
+https://bugzilla.gnome.org/show_bug.cgi?id=692105
+---
+diff --git a/libempathy-gtk/empathy-irc-network-chooser-dialog.c b/libempathy-gtk/empathy-irc-network-chooser-dialog.c
+index 13efaa5..598f923 100644
+--- a/libempathy-gtk/empathy-irc-network-chooser-dialog.c
++++ b/libempathy-gtk/empathy-irc-network-chooser-dialog.c
+@@ -613,6 +613,14 @@ empathy_irc_network_chooser_dialog_dispose (GObject *object)
+       priv->activate_sig = 0;
+     }
+ 
++  if (priv->search != NULL)
++    {
++      empathy_live_search_set_hook_widget (EMPATHY_LIVE_SEARCH (priv->search),
++          NULL);
++
++      priv->search = NULL;
++    }
++
+   tp_clear_object (&priv->settings);
+   tp_clear_object (&priv->network);
+   tp_clear_object (&priv->network_manager);
+--
+cgit v0.9.1
