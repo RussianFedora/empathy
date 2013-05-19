@@ -17,7 +17,7 @@
 
 Name:		empathy
 Version:	3.8.1
-Release:	2%{?dist}.bz692746
+Release:	2%{?dist}
 Summary:	Instant Messaging Client for GNOME
 
 License:	GPLv2+
@@ -193,7 +193,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/adium/message-styles/PlanetGNOME.AdiumMessageStyle/Contents/Resources/main.css
 
 %changelog
-* Sat May 18 2013 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 3.8.1-2.bz692746
+* Sun May 19 2013 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 3.8.1-2.R
 - Add bugzilla patch https://bugzilla.gnome.org/show_bug.cgi?id=692746
 
 * Wed May  8 2013 Brian Pepple <bpepple@fedoraproject.org> - 3.8.1-2
