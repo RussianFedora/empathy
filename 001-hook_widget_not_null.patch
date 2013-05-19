@@ -1,0 +1,24 @@
+From f5940b4bb9c483759ada19a887e1789b08cab917 Mon Sep 17 00:00:00 2001
+From: Guillaume Desmottes <guillaume.desmottes@collabora.co.uk>
+Date: Mon, 11 Mar 2013 15:46:57 +0000
+Subject: live_search_unmap: check if priv->hook_widget is not NULL
+
+https://bugzilla.gnome.org/show_bug.cgi?id=692105
+---
+diff --git a/libempathy-gtk/empathy-live-search.c b/libempathy-gtk/empathy-live-search.c
+index bb1881f..443882f 100644
+--- a/libempathy-gtk/empathy-live-search.c
++++ b/libempathy-gtk/empathy-live-search.c
+@@ -499,7 +499,9 @@ live_search_unmap (GtkWidget *widget)
+   gtk_widget_hide (widget);
+ 
+   gtk_entry_set_text (GTK_ENTRY (priv->search_entry), "");
+-  gtk_widget_grab_focus (priv->hook_widget);
++
++  if (priv->hook_widget != NULL)
++    gtk_widget_grab_focus (priv->hook_widget);
+ }
+ 
+ static void
+--
+cgit v0.9.1
