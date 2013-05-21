@@ -17,7 +17,7 @@
 
 Name:		empathy
 Version:	3.8.2
-Release:	1.1%{?dist}
+Release:	1.2%{?dist}
 Summary:	Instant Messaging Client for GNOME
 
 License:	GPLv2+
@@ -200,6 +200,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %changelog
 * Tue May 21 2013 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 3.8.2-1.2.R
+- Fix changelog
+
+* Tue May 21 2013 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 3.8.2-1.1.R
 - Add patch from fedora for livecd
 
 * Mon May 20 2013 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 3.8.2-1.R
