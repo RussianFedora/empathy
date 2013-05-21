@@ -17,7 +17,7 @@
 
 Name:		empathy
 Version:	3.8.2
-Release:	1%{?dist}
+Release:	1.1%{?dist}
 Summary:	Instant Messaging Client for GNOME
 
 License:	GPLv2+
@@ -63,6 +63,8 @@ BuildRequires:	libsecret-devel >= %{libsecret_version}
 BuildRequires:	gcr-devel >= %{gcr_version}
 BuildRequires:  pkgconfig(gee-0.8)
 BuildRequires:  itstool
+# hack to conserve space on the live cd
+BuildRequires:  /usr/bin/convert
 
 Requires:	telepathy-filesystem
 Requires:	telepathy-mission-control >= %{tp_mc_min_version}
@@ -99,7 +101,6 @@ install -m 0644 %{SOURCE1} ./README.ConnectionManagers
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 
@@ -109,10 +110,17 @@ desktop-file-install --delete-original			\
 	--dir %{buildroot}%{_datadir}/applications	\
 	%{buildroot}%{_datadir}/applications/%{name}.desktop
 
+# hack to conserve space on the live image
+for f in video_overview.png conf_overview.png croom_overview.png; do
+  convert %{buildroot}%{_datadir}/help/C/empathy/figures/$f -resize 150x150 $f
+  mv $f %{buildroot}%{_datadir}/help/C/empathy/figures
+done
+
 
 %post
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 /sbin/ldconfig
+
 
 %postun
 if [ $1 -eq 0 ]; then
@@ -191,6 +199,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/adium/message-styles/PlanetGNOME.AdiumMessageStyle/Contents/Resources/main.css
 
 %changelog
+* Tue May 21 2013 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 3.8.2-1.2.R
+- Add patch from fedora for livecd
+
 * Mon May 20 2013 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 3.8.2-1.R
 - Update to 3.8.2
 - Delete downstream patch
