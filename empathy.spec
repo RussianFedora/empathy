@@ -87,7 +87,7 @@ It is built on top of the Telepathy framework.
 %prep
 %setup -q
 # Gnome #691085
-%patch -p1 -b .escaping-utf8-log
+%patch0 -p1 -b .escaping-utf8-log
 # force this to be regenerated
 rm data/empathy.desktop
 
