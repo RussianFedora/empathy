@@ -17,7 +17,7 @@
 
 Name:		empathy
 Version:	3.6.4
-Release:	3%{?dist}
+Release:	3.1%{?dist}
 Summary:	Instant Messaging Client for GNOME
 
 License:	GPLv2+
