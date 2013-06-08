@@ -1,0 +1,68 @@
+From 1b8188c550b9c52b10b4e7e7ac1572fde9f0128f Mon Sep 17 00:00:00 2001
+From: Ryan Lortie <desrt@desrt.ca>
+Date: Sat, 8 Jun 2013 12:19:39 -0400
+Subject: [PATCH] Fix escaping of text in empathy log window
+
+We insert text into the log window by using a javascript expression,
+with the text to insert quoted with single quotes.
+
+Ensure that we apply the correct escaping so that backslashes and quote
+characters are taken literally.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=691085
+---
+ libempathy-gtk/empathy-log-window.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/libempathy-gtk/empathy-log-window.c b/libempathy-gtk/empathy-log-window.c
+index 4eb44c9..a815c45 100644
+--- a/libempathy-gtk/empathy-log-window.c
++++ b/libempathy-gtk/empathy-log-window.c
+@@ -354,7 +354,9 @@ insert_or_change_row (EmpathyLogWindow *self,
+ {
+   char *str = gtk_tree_path_to_string (path);
+   char *script, *text, *date, *stock_icon;
++  GString *escaped_text;
+   char *icon = NULL;
++  gint i;
+ 
+   gtk_tree_model_get (model, iter,
+       COL_EVENTS_TEXT, &text,
+@@ -375,16 +377,34 @@ insert_or_change_row (EmpathyLogWindow *self,
+       gtk_icon_info_free (icon_info);
+     }
+ 
++  escaped_text = g_string_new (NULL);
++
++  /* Only need to deal with «'» and «\».
++   *
++   * Note that these never appear in non-ascii utf8 characters, so just
++   * pretend like we have an ascii string...
++   */
++  for (i = 0; text && text[i]; i++)
++    {
++      gchar c = text[i];
++
++      if (c == '\'' || c == '\\')
++        g_string_append_c (escaped_text, '\\');
++
++      g_string_append_c (escaped_text, c);
++    }
++
+   script = g_strdup_printf ("javascript:%s([%s], '%s', '%s', '%s');",
+       method,
+       g_strdelimit (str, ":", ','),
+-      text,
++      escaped_text->str,
+       icon != NULL ? icon : "",
+       date);
+ 
+   webkit_web_view_execute_script (WEBKIT_WEB_VIEW (self->priv->webview),
+       script);
+ 
++  g_string_free (escaped_text, TRUE);
+   g_free (str);
+   g_free (text);
+   g_free (date);
+-- 
+1.8.2.1
