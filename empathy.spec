@@ -29,8 +29,7 @@ Patch0:         001-hook_widget_not_null.patch
 Patch1:         002-disconnect_live_search_signal.patch
 Patch2:         003-break_live_search_references_cycle.patch
 Patch3:         004-Fix_crash_when_displaying_google_account_vcard.patch
-#GNOME BZ #692746
-Patch4:         utf8_strescape.patch
+Patch4:         Fix-escaping-of-text-in-empathy-log-window.patch
 
 BuildRequires:	enchant-devel >= %{enchant_version}
 BuildRequires:	iso-codes-devel
@@ -90,7 +89,8 @@ It is built on top of the Telepathy framework.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1 -b .utf8-strescape
+# Gnome #691085
+%patch4 -p1 -b .escaping-utf8-log
 # force this to be regenerated
 rm data/empathy.desktop
 
@@ -201,8 +201,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/adium/message-styles/PlanetGNOME.AdiumMessageStyle/Contents/Resources/main.css
 
 %changelog
-* Sun May 19 2013 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 3.6.4-3.R
-- Add bugzilla patch https://bugzilla.gnome.org/show_bug.cgi?id=692746
+* Sat Jun 08 2013 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 3.6.4-3
+- Add patch for escaping text in logs as downstream
 
 * Wed May  8 2013 Brian Pepple <bpepple@fedoraproject.org> - 3.6.4-3
 - Add patch to fix crash when displaying google account vcard. (#957857)
